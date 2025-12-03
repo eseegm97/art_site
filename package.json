@@ -1,0 +1,26 @@
+{
+  "name": "art_site",
+  "version": "1.0.0",
+  "description": "This will be populated later",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eseegm97/art_site.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/eseegm97/art_site/issues"
+  },
+  "homepage": "https://github.com/eseegm97/art_site#readme",
+  "devDependencies": {
+    "@eslint/js": "^9.39.1",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0"
+  }
+}
