@@ -78,10 +78,21 @@ export class ProfileManager {
   async handleEditProfile(e) {
     e.preventDefault();
     const currentUser = window.artShareApp?.currentUser;
-    if (!currentUser) return;
+    if (!currentUser) {
+      window.artShareApp?.ui?.showToast('Please log in first', 'error');
+      return;
+    }
 
-    const bio = document.getElementById('edit-bio').value;
-    const avatarFile = document.getElementById('edit-avatar').files[0];
+    const bioEl = document.getElementById('edit-bio');
+    const avatarEl = document.getElementById('edit-avatar');
+
+    if (!bioEl || !avatarEl) {
+      window.artShareApp?.ui?.showToast('Form elements not found', 'error');
+      return;
+    }
+
+    const bio = bioEl.value;
+    const avatarFile = avatarEl.files?.[0];
 
     try {
       const updates = { bio };

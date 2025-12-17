@@ -162,12 +162,23 @@ export class CommentManager {
     if (!container) return;
 
     if (comments.length === 0) {
-      container.innerHTML = `
-                <div style="text-align: center; padding: 2rem; color: var(--text-muted);">
-                    <i class="fas fa-comment" style="font-size: 2rem; margin-bottom: 0.5rem; opacity: 0.3;"></i>
-                    <p>No comments yet. Be the first to comment!</p>
-                </div>
-            `;
+      const emptyDiv = document.createElement('div');
+      emptyDiv.style.textAlign = 'center';
+      emptyDiv.style.padding = '2rem';
+      emptyDiv.style.color = 'var(--text-muted)';
+
+      const icon = document.createElement('i');
+      icon.className = 'fas fa-comment';
+      icon.style.fontSize = '2rem';
+      icon.style.marginBottom = '0.5rem';
+      icon.style.opacity = '0.3';
+
+      const text = document.createElement('p');
+      text.textContent = 'No comments yet. Be the first to comment!';
+
+      emptyDiv.appendChild(icon);
+      emptyDiv.appendChild(text);
+      container.appendChild(emptyDiv);
       return;
     }
 

@@ -385,12 +385,30 @@ class ArtShareApp {
 
   async handlePostArt(e) {
     e.preventDefault();
-    if (!this.currentUser) return;
+    if (!this.currentUser) {
+      this.ui.showToast('Please log in to post artwork', 'error');
+      return;
+    }
 
-    const title = document.getElementById('art-title').value;
-    const description = document.getElementById('art-description').value;
-    const category = document.getElementById('art-category').value;
-    const imageFile = document.getElementById('art-image').files[0];
+    const titleEl = document.getElementById('art-title');
+    const descEl = document.getElementById('art-description');
+    const categoryEl = document.getElementById('art-category');
+    const imageEl = document.getElementById('art-image');
+
+    if (!titleEl || !descEl || !categoryEl || !imageEl) {
+      this.ui.showToast('Form elements not found', 'error');
+      return;
+    }
+
+    const title = titleEl.value;
+    const description = descEl.value;
+    const category = categoryEl.value;
+    const imageFile = imageEl.files?.[0];
+
+    if (!title || !category) {
+      this.ui.showToast('Please fill in all required fields', 'error');
+      return;
+    }
 
     if (!imageFile) {
       this.ui.showToast('Please select an image', 'error');
@@ -400,7 +418,7 @@ class ArtShareApp {
     try {
       // Validate the image file
       this.ui.validateImageFile(imageFile);
-      
+
       const imageUrl = await this.ui.fileToBase64(imageFile);
 
       await this.artwork.createArtwork({
@@ -451,7 +469,7 @@ class ArtShareApp {
   setupFileUploadDropZone() {
     const fileUpload = document.querySelector('.file-upload');
     const fileInput = document.getElementById('art-image');
-    
+
     if (!fileUpload || !fileInput) return;
 
     // Prevent default drag behaviors
@@ -462,27 +480,39 @@ class ArtShareApp {
 
     // Highlight drop area when item is dragged over it
     ['dragenter', 'dragover'].forEach(eventName => {
-      fileUpload.addEventListener(eventName, () => {
-        fileUpload.classList.add('dragover');
-      }, false);
+      fileUpload.addEventListener(
+        eventName,
+        () => {
+          fileUpload.classList.add('dragover');
+        },
+        false
+      );
     });
 
     ['dragleave', 'drop'].forEach(eventName => {
-      fileUpload.addEventListener(eventName, () => {
-        fileUpload.classList.remove('dragover');
-      }, false);
+      fileUpload.addEventListener(
+        eventName,
+        () => {
+          fileUpload.classList.remove('dragover');
+        },
+        false
+      );
     });
 
     // Handle dropped files
-    fileUpload.addEventListener('drop', (e) => {
-      const dt = e.dataTransfer;
-      const files = dt.files;
-      
-      if (files.length > 0) {
-        fileInput.files = files;
-        this.handleImagePreview({ target: fileInput });
-      }
-    }, false);
+    fileUpload.addEventListener(
+      'drop',
+      e => {
+        const dt = e.dataTransfer;
+        const files = dt.files;
+
+        if (files.length > 0) {
+          fileInput.files = files;
+          this.handleImagePreview({ target: fileInput });
+        }
+      },
+      false
+    );
 
     // Click to upload
     fileUpload.addEventListener('click', () => {

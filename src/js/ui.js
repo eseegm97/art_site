@@ -4,6 +4,7 @@ export class UIManager {
     this.modals = [];
     this.toasts = [];
     this.mobileMenuOpen = false;
+    this.eventListeners = [];
   }
 
   init() {
@@ -65,11 +66,13 @@ export class UIManager {
 
   setupModalHandlers() {
     // ESC key to close modals
-    document.addEventListener('keydown', e => {
+    const escapeHandler = e => {
       if (e.key === 'Escape' && this.modals.length > 0) {
         this.hideAllModals();
       }
-    });
+    };
+    document.addEventListener('keydown', escapeHandler);
+    this.eventListeners.push({ type: 'keydown', handler: escapeHandler, element: document });
   }
 
   // Toast Notifications
@@ -103,12 +106,14 @@ export class UIManager {
     const toast = document.createElement('div');
     toast.className = `toast ${type}`;
 
-    const icon = this.getToastIcon(type);
+    const icon = document.createElement('i');
+    icon.className = this.getToastIcon(type);
 
-    toast.innerHTML = `
-            <i class="${icon}"></i>
-            <span>${message}</span>
-        `;
+    const messageSpan = document.createElement('span');
+    messageSpan.textContent = message;
+
+    toast.appendChild(icon);
+    toast.appendChild(messageSpan);
 
     return toast;
   }
@@ -264,7 +269,14 @@ export class UIManager {
       element.classList.add('loading');
       element.disabled = true;
       element.dataset.originalText = element.textContent;
-      element.innerHTML = `<i class="fas fa-spinner fa-spin"></i> ${loadingText}`;
+
+      // Clear element and add spinner safely
+      element.textContent = '';
+      const spinner = document.createElement('i');
+      spinner.className = 'fas fa-spinner fa-spin';
+      const text = document.createTextNode(` ${loadingText}`);
+      element.appendChild(spinner);
+      element.appendChild(text);
     } else {
       element.classList.remove('loading');
       element.disabled = false;
@@ -482,6 +494,21 @@ export class UIManager {
 
   getTheme() {
     return localStorage.getItem('artshare_theme') || 'dark';
+  }
+
+  // Cleanup Methods
+  cleanup() {
+    // Remove all event listeners
+    this.eventListeners.forEach(({ type, handler, element }) => {
+      element.removeEventListener(type, handler);
+    });
+    this.eventListeners = [];
+
+    // Close all modals
+    this.hideAllModals();
+
+    // Remove all toasts
+    this.toasts.forEach(toast => this.removeToast(toast));
   }
 
   // Accessibility Helpers
