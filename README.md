@@ -60,6 +60,7 @@ art_site/
 ### Installation
 
 1. Install dependencies:
+
 ```bash
 npm install
 ```
@@ -67,6 +68,7 @@ npm install
 ### Development
 
 Start the development server:
+
 ```bash
 npm run dev
 ```
@@ -76,11 +78,13 @@ The application will open at `http://localhost:3000`
 ### Building for Production
 
 Build the project:
+
 ```bash
 npm run build
 ```
 
 Preview the production build:
+
 ```bash
 npm run preview
 ```
@@ -88,21 +92,25 @@ npm run preview
 ### Testing
 
 Run tests:
+
 ```bash
 npm test
 ```
 
 Run tests with UI:
+
 ```bash
 npm run test:ui
 ```
 
 Run tests once (CI mode):
+
 ```bash
 npm run test:run
 ```
 
 Generate coverage report:
+
 ```bash
 npm run coverage
 ```
@@ -110,21 +118,25 @@ npm run coverage
 ### Code Quality
 
 Check linting:
+
 ```bash
 npm run lint
 ```
 
 Fix linting issues:
+
 ```bash
 npm run lint:fix
 ```
 
 Format code:
+
 ```bash
 npm run format
 ```
 
 Check formatting:
+
 ```bash
 npm run format:check
 ```

@@ -1,0 +1,354 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ArtShare - Creative Portfolio Platform</title>
+    <link rel="stylesheet" href="src/styles/main.css" />
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+      rel="stylesheet"
+    />
+  </head>
+  <body>
+    <!-- Header Navigation -->
+    <header class="navbar">
+      <div class="nav-container">
+        <div class="nav-brand">
+          <h1><i class="fas fa-palette"></i> ArtShare</h1>
+        </div>
+        <nav class="nav-menu">
+          <ul class="nav-list">
+            <li><a href="#home" class="nav-link active" data-section="home">Home</a></li>
+            <li><a href="#gallery" class="nav-link" data-section="gallery">Gallery</a></li>
+            <li class="nav-user-section">
+              <!-- User not logged in -->
+              <div class="auth-buttons" id="auth-section">
+                <button class="btn btn-outline" id="login-btn">Login</button>
+                <button class="btn btn-primary" id="register-btn">Register</button>
+              </div>
+              <!-- User logged in (hidden by default) -->
+              <div class="user-menu" id="user-section" style="display: none">
+                <button class="btn btn-primary" id="post-art-btn">
+                  <i class="fas fa-plus"></i> Post Art
+                </button>
+                <div class="dropdown">
+                  <button class="user-avatar" id="user-dropdown">
+                    <img src="https://via.placeholder.com/40" alt="User Avatar" id="user-avatar" />
+                    <span id="username-display">User</span>
+                    <i class="fas fa-chevron-down"></i>
+                  </button>
+                  <div class="dropdown-menu">
+                    <a href="#" data-section="profile"><i class="fas fa-user"></i> My Profile</a>
+                    <a href="#" data-section="my-art"><i class="fas fa-images"></i> My Art</a>
+                    <a href="#" id="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                  </div>
+                </div>
+              </div>
+            </li>
+          </ul>
+        </nav>
+        <div class="mobile-menu-toggle" id="mobile-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+      <!-- Home Section -->
+      <section id="home-section" class="content-section active">
+        <div class="hero">
+          <div class="hero-content">
+            <h2>Discover Amazing Artwork</h2>
+            <p>
+              Share your creativity with the world and explore incredible art from talented artists
+            </p>
+            <div class="hero-stats">
+              <div class="stat">
+                <span class="stat-number" id="total-artworks">0</span>
+                <span class="stat-label">Artworks</span>
+              </div>
+              <div class="stat">
+                <span class="stat-number" id="total-artists">0</span>
+                <span class="stat-label">Artists</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Latest Artworks Feed -->
+        <div class="feed-container">
+          <div class="feed-header">
+            <h3><i class="fas fa-clock"></i> Latest Artworks</h3>
+            <div class="filter-options">
+              <select id="sort-filter" class="filter-select">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+                <option value="popular">Most Popular</option>
+              </select>
+            </div>
+          </div>
+          <div class="artworks-grid" id="main-feed">
+            <!-- Artworks will be dynamically loaded here -->
+          </div>
+          <div class="loading-spinner" id="loading-spinner" style="display: none">
+            <i class="fas fa-spinner fa-spin"></i> Loading more artworks...
+          </div>
+        </div>
+      </section>
+
+      <!-- Gallery Section -->
+      <section id="gallery-section" class="content-section">
+        <div class="gallery-header">
+          <h2><i class="fas fa-images"></i> Art Gallery</h2>
+          <div class="gallery-controls">
+            <div class="search-box">
+              <input type="text" placeholder="Search artworks..." id="gallery-search" />
+              <i class="fas fa-search"></i>
+            </div>
+            <select id="category-filter" class="filter-select">
+              <option value="all">All Categories</option>
+              <option value="digital">Digital Art</option>
+              <option value="traditional">Traditional Art</option>
+              <option value="photography">Photography</option>
+              <option value="3d">3D Art</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+        </div>
+        <div class="artworks-grid" id="gallery-grid">
+          <!-- Gallery artworks will be loaded here -->
+        </div>
+      </section>
+
+      <!-- Profile Section -->
+      <section id="profile-section" class="content-section">
+        <div class="profile-container">
+          <div class="profile-header">
+            <div class="profile-info">
+              <img
+                src="https://via.placeholder.com/120"
+                alt="Profile Avatar"
+                id="profile-avatar"
+                class="profile-image"
+              />
+              <div class="profile-details">
+                <h2 id="profile-username">Username</h2>
+                <p id="profile-bio">Bio will appear here...</p>
+                <div class="profile-stats">
+                  <div class="stat">
+                    <span class="stat-number" id="profile-artworks-count">0</span>
+                    <span class="stat-label">Artworks</span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-number" id="profile-likes-count">0</span>
+                    <span class="stat-label">Likes</span>
+                  </div>
+                  <div class="stat">
+                    <span class="stat-number" id="profile-joined">2024</span>
+                    <span class="stat-label">Joined</span>
+                  </div>
+                </div>
+                <button class="btn btn-outline" id="edit-profile-btn">
+                  <i class="fas fa-edit"></i> Edit Profile
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="profile-tabs">
+            <button class="tab-btn active" data-tab="artworks">My Artworks</button>
+            <button class="tab-btn" data-tab="liked">Liked</button>
+          </div>
+          <div class="tab-content">
+            <div id="artworks-tab" class="tab-pane active">
+              <div class="artworks-grid" id="profile-artworks">
+                <!-- User's artworks will be loaded here -->
+              </div>
+            </div>
+            <div id="liked-tab" class="tab-pane">
+              <div class="artworks-grid" id="liked-artworks">
+                <!-- Liked artworks will be loaded here -->
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Login Modal -->
+    <div class="modal" id="login-modal">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2><i class="fas fa-sign-in-alt"></i> Login to ArtShare</h2>
+        <form id="login-form">
+          <div class="form-group">
+            <label for="login-username">Username</label>
+            <input type="text" id="login-username" required />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" required />
+          </div>
+          <button type="submit" class="btn btn-primary full-width">Login</button>
+          <p class="modal-footer">
+            Don't have an account? <a href="#" id="switch-to-register">Register here</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Register Modal -->
+    <div class="modal" id="register-modal">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2><i class="fas fa-user-plus"></i> Join ArtShare</h2>
+        <form id="register-form">
+          <div class="form-group">
+            <label for="register-username">Username</label>
+            <input type="text" id="register-username" required />
+          </div>
+          <div class="form-group">
+            <label for="register-email">Email</label>
+            <input type="email" id="register-email" required />
+          </div>
+          <div class="form-group">
+            <label for="register-password">Password</label>
+            <input type="password" id="register-password" required />
+          </div>
+          <div class="form-group">
+            <label for="register-confirm">Confirm Password</label>
+            <input type="password" id="register-confirm" required />
+          </div>
+          <button type="submit" class="btn btn-primary full-width">Register</button>
+          <p class="modal-footer">
+            Already have an account? <a href="#" id="switch-to-login">Login here</a>
+          </p>
+        </form>
+      </div>
+    </div>
+
+    <!-- Post Art Modal -->
+    <div class="modal" id="post-art-modal">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2><i class="fas fa-plus"></i> Share Your Art</h2>
+        <form id="post-art-form">
+          <div class="form-group">
+            <label for="art-title">Title</label>
+            <input type="text" id="art-title" required />
+          </div>
+          <div class="form-group">
+            <label for="art-description">Description</label>
+            <textarea
+              id="art-description"
+              rows="3"
+              placeholder="Tell us about your artwork..."
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="art-category">Category</label>
+            <select id="art-category" required>
+              <option value="">Select a category</option>
+              <option value="digital">Digital Art</option>
+              <option value="traditional">Traditional Art</option>
+              <option value="photography">Photography</option>
+              <option value="3d">3D Art</option>
+              <option value="other">Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="art-image">Upload Image</label>
+            <div class="file-upload">
+              <input type="file" id="art-image" accept="image/*" required />
+              <div class="file-upload-text">
+                <i class="fas fa-cloud-upload-alt"></i>
+                <span>Choose an image or drag and drop</span>
+              </div>
+            </div>
+            <div class="image-preview" id="image-preview" style="display: none">
+              <img id="preview-image" alt="Preview" />
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary full-width">Post Artwork</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Artwork Detail Modal -->
+    <div class="modal" id="artwork-modal">
+      <div class="modal-content artwork-detail">
+        <span class="modal-close">&times;</span>
+        <div class="artwork-display">
+          <img id="modal-artwork-image" alt="Artwork" />
+        </div>
+        <div class="artwork-info">
+          <div class="artwork-header">
+            <h3 id="modal-artwork-title">Artwork Title</h3>
+            <div class="artwork-actions">
+              <button class="btn-icon like-btn" id="modal-like-btn">
+                <i class="fas fa-heart"></i>
+                <span id="modal-like-count">0</span>
+              </button>
+              <button class="btn-icon" id="modal-delete-btn" style="display: none">
+                <i class="fas fa-trash"></i>
+              </button>
+            </div>
+          </div>
+          <div class="artwork-meta">
+            <span class="artist">By <strong id="modal-artwork-artist">Artist Name</strong></span>
+            <span class="date" id="modal-artwork-date">Date</span>
+            <span class="category" id="modal-artwork-category">Category</span>
+          </div>
+          <p class="artwork-description" id="modal-artwork-description">
+            Artwork description will appear here...
+          </p>
+
+          <!-- Comments Section -->
+          <div class="comments-section">
+            <h4><i class="fas fa-comments"></i> Comments</h4>
+            <div class="comment-form" id="comment-form-section">
+              <textarea id="comment-text" placeholder="Add a comment..." rows="2"></textarea>
+              <button class="btn btn-primary" id="post-comment-btn">Post Comment</button>
+            </div>
+            <div class="comments-list" id="comments-list">
+              <!-- Comments will be loaded here -->
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Edit Modal -->
+    <div class="modal" id="edit-profile-modal">
+      <div class="modal-content">
+        <span class="modal-close">&times;</span>
+        <h2><i class="fas fa-edit"></i> Edit Profile</h2>
+        <form id="edit-profile-form">
+          <div class="form-group">
+            <label for="edit-bio">Bio</label>
+            <textarea id="edit-bio" rows="3" placeholder="Tell us about yourself..."></textarea>
+          </div>
+          <div class="form-group">
+            <label for="edit-avatar">Profile Picture</label>
+            <div class="file-upload">
+              <input type="file" id="edit-avatar" accept="image/*" />
+              <div class="file-upload-text">
+                <i class="fas fa-camera"></i>
+                <span>Choose a profile picture</span>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn btn-primary full-width">Save Changes</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Toast Notifications -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script type="module" src="src/js/main.js"></script>
+  </body>
+</html>

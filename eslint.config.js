@@ -22,7 +22,15 @@ export default [
         fetch: 'readonly',
         FormData: 'readonly',
         URL: 'readonly',
-        URLSearchParams: 'readonly'
+        URLSearchParams: 'readonly',
+        FileReader: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        requestAnimationFrame: 'readonly',
+        getComputedStyle: 'readonly',
+        IntersectionObserver: 'readonly',
+        confirm: 'readonly',
+        alert: 'readonly'
       }
     },
     rules: {
@@ -41,8 +49,8 @@ export default [
       'no-multiple-empty-lines': ['error', { max: 2 }],
       'eol-last': 'error',
       'comma-dangle': ['error', 'never'],
-      'semi': ['error', 'always'],
-      'quotes': ['error', 'single', { avoidEscape: true }]
+      semi: ['error', 'always'],
+      quotes: ['error', 'single', { avoidEscape: true }]
     }
   },
   {
