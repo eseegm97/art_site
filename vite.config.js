@@ -4,21 +4,21 @@ import { resolve } from 'path';
 export default defineConfig({
   // Base public path when served in development or production
   base: '/',
-  
+
   // Build configuration
   build: {
     // Output directory for build files
     outDir: 'dist',
-    
+
     // Generate source maps for production debugging
     sourcemap: true,
-    
+
     // Target browsers
     target: 'es2020',
-    
+
     // Minify options
     minify: 'esbuild',
-    
+
     // Rollup options
     rollupOptions: {
       input: {
@@ -31,34 +31,34 @@ export default defineConfig({
         }
       }
     },
-    
+
     // Asset handling
     assetsDir: 'assets',
-    
+
     // Chunk size warning limit (in kB)
     chunkSizeWarningLimit: 1000
   },
-  
+
   // Development server configuration
   server: {
     port: 3000,
     open: true,
     host: true,
     cors: true,
-    
+
     // Hot Module Replacement
     hmr: {
       port: 3001
     }
   },
-  
+
   // Preview server configuration (for built app)
   preview: {
     port: 3002,
     open: true,
     host: true
   },
-  
+
   // CSS configuration
   css: {
     devSourcemap: true,
@@ -68,21 +68,21 @@ export default defineConfig({
       }
     }
   },
-  
+
   // Asset handling
   assetsInclude: ['**/*.svg', '**/*.png', '**/*.jpg', '**/*.jpeg', '**/*.gif', '**/*.webp'],
-  
+
   // Public directory
   publicDir: 'public',
-  
+
   // Environment variables
   envPrefix: 'VITE_',
-  
+
   // Plugin configuration
   plugins: [
     // Add plugins here as needed
   ],
-  
+
   // Dependency optimization
   optimizeDeps: {
     include: [
@@ -92,13 +92,13 @@ export default defineConfig({
       // Add dependencies that should not be pre-bundled
     ]
   },
-  
+
   // ESBuild configuration
   esbuild: {
     target: 'es2020',
     format: 'esm'
   },
-  
+
   // Resolve configuration
   resolve: {
     alias: {
