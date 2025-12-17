@@ -224,6 +224,15 @@ class ArtShareApp {
       });
     });
 
+    // Dropdown menu navigation
+    document.querySelectorAll('.dropdown-menu a[data-section]').forEach(link => {
+      link.addEventListener('click', e => {
+        e.preventDefault();
+        const section = link.dataset.section;
+        this.navigateToSection(section);
+      });
+    });
+
     // Authentication buttons
     document
       .getElementById('login-btn')
@@ -269,6 +278,9 @@ class ArtShareApp {
     document
       .getElementById('art-image')
       ?.addEventListener('change', e => this.handleImagePreview(e));
+
+    // Setup drag and drop for file upload
+    this.setupFileUploadDropZone();
 
     // Filter and search
     document
@@ -374,6 +386,9 @@ class ArtShareApp {
     }
 
     try {
+      // Validate the image file
+      this.ui.validateImageFile(imageFile);
+      
       const imageUrl = await this.ui.fileToBase64(imageFile);
 
       await this.artwork.createArtwork({
@@ -403,15 +418,69 @@ class ArtShareApp {
   handleImagePreview(e) {
     const file = e.target.files[0];
     if (file) {
-      const reader = new FileReader();
-      reader.onload = e => {
-        const preview = document.getElementById('image-preview');
-        const previewImg = document.getElementById('preview-image');
-        previewImg.src = e.target.result;
-        preview.style.display = 'block';
-      };
-      reader.readAsDataURL(file);
+      try {
+        this.ui.validateImageFile(file);
+        const reader = new FileReader();
+        reader.onload = e => {
+          const preview = document.getElementById('image-preview');
+          const previewImg = document.getElementById('preview-image');
+          previewImg.src = e.target.result;
+          preview.style.display = 'block';
+        };
+        reader.readAsDataURL(file);
+      } catch (error) {
+        this.ui.showToast(error.message, 'error');
+        // Clear the input
+        e.target.value = '';
+      }
     }
+  }
+
+  setupFileUploadDropZone() {
+    const fileUpload = document.querySelector('.file-upload');
+    const fileInput = document.getElementById('art-image');
+    
+    if (!fileUpload || !fileInput) return;
+
+    // Prevent default drag behaviors
+    ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+      fileUpload.addEventListener(eventName, this.preventDefaults, false);
+      document.body.addEventListener(eventName, this.preventDefaults, false);
+    });
+
+    // Highlight drop area when item is dragged over it
+    ['dragenter', 'dragover'].forEach(eventName => {
+      fileUpload.addEventListener(eventName, () => {
+        fileUpload.classList.add('dragover');
+      }, false);
+    });
+
+    ['dragleave', 'drop'].forEach(eventName => {
+      fileUpload.addEventListener(eventName, () => {
+        fileUpload.classList.remove('dragover');
+      }, false);
+    });
+
+    // Handle dropped files
+    fileUpload.addEventListener('drop', (e) => {
+      const dt = e.dataTransfer;
+      const files = dt.files;
+      
+      if (files.length > 0) {
+        fileInput.files = files;
+        this.handleImagePreview({ target: fileInput });
+      }
+    }, false);
+
+    // Click to upload
+    fileUpload.addEventListener('click', () => {
+      fileInput.click();
+    });
+  }
+
+  preventDefaults(e) {
+    e.preventDefault();
+    e.stopPropagation();
   }
 
   // Navigation
