@@ -31,8 +31,11 @@ class ArtShareApp {
     // Load initial content
     this.loadHomeContent();
 
+    // Clear existing sample data if you want a fresh start
+    this.clearSampleData();
+
     // Initialize sample data if none exists
-    this.initializeSampleData();
+    // this.initializeSampleData(); // Commented out to remove sample artworks
   }
 
   initializeSampleData() {
@@ -212,6 +215,15 @@ class ArtShareApp {
     localStorage.setItem('artshare_user_likes', JSON.stringify({}));
 
     console.log('Sample data initialized');
+  }
+
+  clearSampleData() {
+    // Remove all sample data from localStorage
+    localStorage.removeItem('artshare_artworks');
+    localStorage.removeItem('artshare_comments');
+    localStorage.removeItem('artshare_user_likes');
+    localStorage.removeItem('artshare_users');
+    console.log('Sample data cleared');
   }
 
   setupEventListeners() {
